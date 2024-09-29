@@ -127,7 +127,7 @@ impl HttpStatus {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum HttpMethod {
     GET,
     HEAD,
@@ -305,6 +305,14 @@ impl HttpRequest {
             headers,
             body,
         }
+    }
+
+    pub fn method(&self) -> &HttpMethod {
+        &self.method
+    }
+
+    pub fn uri(&self) -> &str {
+        &self.uri
     }
 
     pub fn from_request(request: &Vec<String>) -> Result<Self, String> {
