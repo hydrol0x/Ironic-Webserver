@@ -327,11 +327,8 @@ impl HttpRequest {
         }
 
         let method = HttpMethod::from_string(parts[0]).expect("Expected valid HTTP method string");
-        println!("Method: {}", parts[0]); // dbg
         let uri = parts[1].to_string();
-        println!("URI: {}", &uri); // dbg
         let version_string: String = parts[2].parse().expect("Couldn't parse status code");
-        println!("Version String: {}", &version_string); // dbg
         let version: HttpVersion =
             HttpVersion::from_string(&version_string).expect("Expect valid HTML version string");
         // Status text is not needed
