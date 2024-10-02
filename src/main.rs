@@ -87,14 +87,9 @@ fn handle_connection(mut stream: TcpStream) {
         .take_while(|line| !line.is_empty())
         .collect();
 
-    let mut file = File::open("../webserver/index.html").unwrap();
-    let mut contents = String::new();
-    file.read_to_string(&mut contents).unwrap();
-
     let req = HttpRequest::from_request(&http_request);
 
-    let page_404 =
-        fs::read_to_string("../webserver/404.html").expect("Expect 404 page file to exist");
+    let page_404 = fs::read_to_string("../404.html").expect("Expect 404 page file to exist");
     let resp_404 = HttpResp::with_text_html(HttpVersion::V(1.1), 404, page_404);
     if let Ok(request) = req {
         if *request.method() == HttpMethod::GET {
@@ -107,17 +102,17 @@ fn handle_connection(mut stream: TcpStream) {
         let contents = match uri {
             "/" => {
                 // on '/' serve the default page
-                fs::read_to_string("../webserver/index.html")?
+                fs::read_to_string("../index.html")?
             }
             "/sleep" => {
                 std::thread::sleep(std::time::Duration::from_secs(5));
-                fs::read_to_string("../webserver/index.html")?
+                fs::read_to_string("../index.html")?
             }
             _ => {
                 let path = if uri.ends_with(".html") {
-                    format!("../webserver/{}", uri)
+                    format!("../{}", uri)
                 } else {
-                    format!("../webserver/{}.html", uri)
+                    format!("../{}.html", uri)
                 };
 
                 fs::read_to_string(path)?
